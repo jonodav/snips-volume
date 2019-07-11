@@ -90,4 +90,4 @@ class SmartDevices(object):
             h.subscribe_intents(self.master_intent_callback).start()
 
 if __name__ == "__main__":
-    Template()
+    SmartDevices()
