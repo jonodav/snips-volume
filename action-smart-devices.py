@@ -16,7 +16,7 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
-class Template(object):
+class SmartDevices(object):
     """Class used to wrap action code with mqtt connection
         
         Please change the name refering to your application
@@ -38,7 +38,7 @@ class Template(object):
         hermes.publish_end_session(intent_message.session_id, "")
         
         # action code goes here...
-        #print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         # get the slots from intent
         for (slot_value, slot) in intent_message.slots.items():
@@ -67,7 +67,7 @@ class Template(object):
         hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
-        #print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "Action2 has been done", "")
