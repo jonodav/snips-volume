@@ -46,6 +46,10 @@ class SmartDevices(object):
                 self.device = slot.first().value.encode("utf8")
             if slot_value == "state":
                 self.state = slot.first().value.encode("utf8")
+
+        ip = "192.168.0.160"
+        port = 16000
+        data = "2"
         
         if self.device == "down lights" or self.device == "ceiling lights" or self.device == "lights":
             ip = "192.168.0.160"
