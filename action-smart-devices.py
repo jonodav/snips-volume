@@ -51,20 +51,40 @@ class SmartDevices(object):
         port = 16000
         data = "2"
         
-        if self.Device == "down lights" or self.Device == "ceiling lights" or self.Device == "lights":
+        if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
-        
-        if self.State == "on" or self.State == "On":
-            data = "1"
-        if self.State == "off" or self.State == "Off":
-            data = "0"
+            if self.State == "On":
+                data = "1"
+            if self.State == "Off":
+                data = "0"
+        if self.Device == "desk light":
+            ip = "192.168.0.181"
+            port = 4221
+            if self.State == "Off":
+                data = "f,0,0,0,0,0"
+            if self.State == "On":
+                data = "f,0,0,0,0,255"
+        if self.Device == "bedside lamp":
+            ip = "192.168.0.181"
+            port = 4221
+            if self.State == "Off":
+                data = "f,0,0,0,0,0"
+            if self.State == "On":
+                data = "f,0,0,0,0,255"
+        if self.Device == "smart lamp":
+            ip = "192.168.0.181"
+            port = 4221
+            if self.State == "Off":
+                data = "f,0,0,0"
+            if self.State == "On":
+                data = "f,255,255,255"
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "OnOff intent done", "")
+        hermes.publish_start_session_notification(intent_message.site_id, "Turned the " + self.Device + self.State, "")
 
     def setBrightnessCallback(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -73,8 +93,18 @@ class SmartDevices(object):
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
+        if self.Device == "downlights":
+            ip = "192.168.0.160"
+            port = 16000
+            value = self.Brightness / 10 * 1023
+            data = "l," + value
+
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.sendto(data, (ip, port))
+
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Action2 has been done", "")
+        hermes.publish_end_session(intent_message.site_id, self.Device + " set to " + self.Brightness + " percent", "")
 
     # More callback function goes here...
 
