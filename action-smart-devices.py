@@ -35,7 +35,7 @@ class SmartDevices(object):
     # --> Sub callback function, one per intent
     def onOffCallback(self, hermes, intent_message):
         # terminate the session first if not continue
-        hermes.publish_end_session(intent_message.session_id, "")
+        #hermes.publish_end_session(intent_message.session_id, "")
         
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -84,11 +84,11 @@ class SmartDevices(object):
         sock.sendto(data, (ip, port))
 
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Turned the " + self.Device + " " + self.State, "")
+        hermes.publish_end_session(intent_message.site_id, "Turned the " + self.Device + " " + self.State, "")
 
     def setBrightnessCallback(self, hermes, intent_message):
         # terminate the session first if not continue
-        hermes.publish_end_session(intent_message.session_id, "")
+        #hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -110,7 +110,7 @@ class SmartDevices(object):
         sock.sendto(data, (ip, port))
 
         # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.site_id, self.Device + " set to " + self.Brightness + " percent", "")
+        hermes.publish_end_session(intent_message.site_id, self.Device + " set to " + self.Brightness + " percent")
 
     # More callback function goes here...
 
