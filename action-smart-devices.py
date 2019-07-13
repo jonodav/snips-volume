@@ -102,7 +102,7 @@ class SmartDevices(object):
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
-            value = int(self.Brightness) / 10 * 1023
+            value = (float(self.Brightness) / 100) * 1023
             data = "l," + str(value)
 
 
