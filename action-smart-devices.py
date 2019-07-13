@@ -84,7 +84,7 @@ class SmartDevices(object):
         sock.sendto(data, (ip, port))
 
         # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Turned the " + self.Device + self.State, "")
+        hermes.publish_start_session_notification(intent_message.site_id, "Turned the " + self.Device + " " + self.State, "")
 
     def setBrightnessCallback(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -92,6 +92,12 @@ class SmartDevices(object):
 
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+
+        for (slot_value, slot) in intent_message.slots.items():
+            if slot_value == "Device":
+                self.Device = slot.first().value.encode("utf8")
+            if slot_value == "Brightness":
+                self.Brightness = slot.first().value.encode("utf8")
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
