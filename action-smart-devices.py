@@ -83,8 +83,11 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
+        tts = "Turned the " + self.Device + " " + self.State
+        res = hermes.skill.speak_item(tts)
+
         # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.site_id, "Turned the " + self.Device + " " + self.State, "")
+        hermes.publish_end_session(intent_message.site_id, res.decode("latin-1"))
 
     def setBrightnessCallback(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -105,12 +108,14 @@ class SmartDevices(object):
             value = (float(self.Brightness) / 100) * 1023
             data = "l," + str(value)
 
-
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
+        tts = self.Device + " set to " + self.Brightness + " percent"
+        res = hermes.skill.speak_item(tts)
+
         # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.site_id, self.Device + " set to " + self.Brightness + " percent")
+        hermes.publish_end_session(intent_message.site_id, res.decode("latin-1"))
 
     # More callback function goes here...
 
