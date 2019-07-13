@@ -42,9 +42,9 @@ class SmartDevices(object):
 
         # get the slots from intent
         for (slot_value, slot) in intent_message.slots.items():
-            if slot_value == "device":
+            if slot_value == "Device":
                 self.device = slot.first().value.encode("utf8")
-            if slot_value == "state":
+            if slot_value == "State":
                 self.state = slot.first().value.encode("utf8")
 
         ip = "192.168.0.160"
