@@ -84,10 +84,9 @@ class SmartDevices(object):
         sock.sendto(data, (ip, port))
 
         tts = "Turned the " + self.Device + " " + self.State
-        res = hermes.skill.speak_item(tts)
 
         # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.site_id, res.decode("latin-1"))
+        hermes.publish_end_session(intent_message.session_id, tts)
 
     def setBrightnessCallback(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -112,10 +111,9 @@ class SmartDevices(object):
         sock.sendto(data, (ip, port))
 
         tts = self.Device + " set to " + self.Brightness + " percent"
-        res = hermes.skill.speak_item(tts)
 
         # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.site_id, res.decode("latin-1"))
+        hermes.publish_end_session(intent_message.session_id, tts)
 
     # More callback function goes here...
 
