@@ -43,21 +43,21 @@ class SmartDevices(object):
         # get the slots from intent
         for (slot_value, slot) in intent_message.slots.items():
             if slot_value == "Device":
-                self.device = slot.first().value.encode("utf8")
+                self.Device = slot.first().value.encode("utf8")
             if slot_value == "State":
-                self.state = slot.first().value.encode("utf8")
+                self.State = slot.first().value.encode("utf8")
 
         ip = "192.168.0.160"
         port = 16000
         data = "2"
         
-        if self.device == "down lights" or self.device == "ceiling lights" or self.device == "lights":
+        if self.Device == "down lights" or self.Device == "ceiling lights" or self.Device == "lights":
             ip = "192.168.0.160"
             port = 16000
         
-        if self.state == "on" or self.state == "On":
+        if self.State == "on" or self.State == "On":
             data = "1"
-        if self.state == "off" or self.state == "Off":
+        if self.State == "off" or self.State == "Off":
             data = "0"
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
