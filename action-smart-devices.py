@@ -102,8 +102,8 @@ class SmartDevices(object):
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
-            value = self.Brightness / 10 * 1023
-            data = "l," + value
+            value = int(self.Brightness) / 10 * 1023
+            data = "l," + str(value)
 
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
