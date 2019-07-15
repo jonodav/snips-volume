@@ -6,6 +6,7 @@ from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
 import io
 import socket
+import random
 
 CONFIG_INI = "config.ini"
 
@@ -15,6 +16,9 @@ CONFIG_INI = "config.ini"
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
+
+success_tts = ['Got it', 'Sure', 'Done', 'Ok']
+fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work", "No"]
 
 class SmartDevices(object):
     """Class used to wrap action code with mqtt connection
@@ -47,10 +51,8 @@ class SmartDevices(object):
             if slot_value == "State":
                 self.State = slot.first().value.encode("utf8")
 
-        ip = "192.168.0.160"
-        port = 16000
-        data = "2"
-        
+        data = None
+
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
@@ -66,15 +68,15 @@ class SmartDevices(object):
             if self.State == "On":
                 data = "f,0,0,0,0,255"
         if self.Device == "bedside lamp":
-            ip = "192.168.0.181"
-            port = 4221
+            ip = "192.168.0.180"
+            port = 4220
             if self.State == "Off":
                 data = "f,0,0,0,0,0"
             if self.State == "On":
                 data = "f,0,0,0,0,255"
         if self.Device == "smart lamp":
-            ip = "192.168.0.181"
-            port = 4221
+            ip = "192.168.0.182"
+            port = 4222
             if self.State == "Off":
                 data = "f,0,0,0"
             if self.State == "On":
@@ -83,7 +85,11 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
-        tts = "Turned the " + self.Device + " " + self.State
+        if data is not None:
+            tts = random.choice(success_tts)
+        else:
+            tts = random.choice(fail_tts)
+        #tts = "Turned the " + self.Device + " " + self.State
 
         # if need to speak the execution result by tts
         hermes.publish_end_session(intent_message.session_id, tts)
@@ -101,16 +107,28 @@ class SmartDevices(object):
             if slot_value == "Brightness":
                 self.Brightness = slot.first().value.encode("utf8")
 
+        data = None
+
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
             value = (float(self.Brightness) / 100) * 1023
             data = "l," + str(value)
+        
+        if self.Device == "bedside lamp":
+            ip = "192.168.0.180"
+            port = 4220
+            value = (float(self.Brightness) / 100) * 255
+            data = "f," + str(value)
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
-        tts = self.Device + " set to " + self.Brightness + " percent"
+        if data is not None:
+            tts = random.choice(success_tts)
+        else:
+            tts = random.choice(fail_tts)
+        #tts = self.Device + " set to " + self.Brightness + " percent"
 
         # if need to speak the execution result by tts
         hermes.publish_end_session(intent_message.session_id, tts)
