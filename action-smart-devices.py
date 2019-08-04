@@ -35,6 +35,60 @@ class SmartDevices(object):
 
         # start listening to MQTT
         self.start_blocking()
+
+    def ctFromColor(setColor):
+        if setColor == "natural":
+            return "512"
+        if setColor == "warm":
+            return "0"
+        if setColor == "cool":
+            return "1023"
+        else:
+            return ""
+    
+    def rgbctFromColor(setColor):
+        if setColor == "natural":
+            return "0,0,0,255,255"
+        if setColor == "warm":
+            return "0,0,0,255,0"
+        if setColor == "cool":
+            return "0,0,0,0,255"
+        if setColor == "blue":
+            return "0,0,255,0,0"
+        if setColor == "green":
+            return "0,255,0,0,0"
+        if setColor == "red":
+            return "255,0,0,0,0"
+        if setColor == "cyan":
+            return "0,255,255,0,0"
+        if setColor == "yellow":
+            return "255,255,0,0,0"
+        if setColor == "pink":
+            return "255,0,255,0,0"
+        else:
+            return ""
+    
+    def rgbFromColor(setColor):
+        if setColor == "natural":
+            return "255,255,255"
+        if setColor == "warm":
+            return "255,255,200"
+        if setColor == "cool":
+            return "230,230,255"
+        if setColor == "blue":
+            return "0,0,255"
+        if setColor == "green":
+            return "0,255,0"
+        if setColor == "red":
+            return "255,0,0"
+        if setColor == "cyan":
+            return "0,255,255"
+        if setColor == "yellow":
+            return "255,255,0"
+        if setColor == "pink":
+            return "255,0,255"
+        else:
+             return ""
         
     # --> Sub callback function, one per intent
     def onOffCallback(self, hermes, intent_message):
@@ -256,60 +310,6 @@ class SmartDevices(object):
     def start_blocking(self):
         with Hermes(MQTT_ADDR) as h:
             h.subscribe_intents(self.master_intent_callback).start()
-
-    def ctFromColor(setColor):
-        if setColor == "natural":
-            return "512"
-        if setColor == "warm":
-            return "0"
-        if setColor == "cool":
-            return "1023"
-        else:
-            return ""
-    
-    def rgbctFromColor(setColor):
-        if setColor == "natural":
-            return "0,0,0,255,255"
-        if setColor == "warm":
-            return "0,0,0,255,0"
-        if setColor == "cool":
-            return "0,0,0,0,255"
-        if setColor == "blue":
-            return "0,0,255,0,0"
-        if setColor == "green":
-            return "0,255,0,0,0"
-        if setColor == "red":
-            return "255,0,0,0,0"
-        if setColor == "cyan":
-            return "0,255,255,0,0"
-        if setColor == "yellow":
-            return "255,255,0,0,0"
-        if setColor == "pink":
-            return "255,0,255,0,0"
-        else:
-            return ""
-    
-    def rgbFromColor(setColor):
-        if setColor == "natural":
-            return "255,255,255"
-        if setColor == "warm":
-            return "255,255,200"
-        if setColor == "cool":
-            return "230,230,255"
-        if setColor == "blue":
-            return "0,0,255"
-        if setColor == "green":
-            return "0,255,0"
-        if setColor == "red":
-            return "255,0,0"
-        if setColor == "cyan":
-            return "0,255,255"
-        if setColor == "yellow":
-            return "255,255,0"
-        if setColor == "pink":
-            return "255,0,255"
-        else:
-             return ""
  
 if __name__ == "__main__":
     SmartDevices()
