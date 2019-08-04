@@ -141,32 +141,32 @@ class SmartDevices(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         for (slot_value, slot) in intent_message.slots.items():
-            if slot_value == "device":
-                self.device = slot.first().value.encode("utf8")
-            if slot_value == "color":
-                self.color = slot.first().value.encode("utf8")
+            if slot_value == "Device":
+                self.Device = slot.first().value.encode("utf8")
+            if slot_value == "Color":
+                self.Color = slot.first().value.encode("utf8")
 
         data = None
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
-            data = "t," + ctFromColor(self.color)
+            data = "t," + ctFromColor(self.Color)
         
         if self.Device == "desk light":
             ip = "192.168.0.181"
             port = 4221
-            data = "f," + rgbctFromColor(self.color)
+            data = "f," + rgbctFromColor(self.Color)
         
         if self.Device == "smart lamp":
             ip = "192.168.0.182"
             port = 4222
-            data = "f," + rgbFromColor(self.color)
-            if self.color == "fire":
+            data = "f," + rgbFromColor(self.Color)
+            if self.Color == "fire":
                 data = "b"
-            if self.color == "clouds":
+            if self.Color == "clouds":
                 data = "d"
-            if self.color == "cycle":
+            if self.Color == "cycle":
                 data = "c"
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
@@ -176,7 +176,6 @@ class SmartDevices(object):
             tts = random.choice(success_tts)
         else:
             tts = random.choice(fail_tts)
-        #tts = self.Device + " set to " + self.Brightness + " percent"
 
         # if need to speak the execution result by tts
         hermes.publish_end_session(intent_message.session_id, tts)
@@ -228,6 +227,15 @@ class SmartDevices(object):
             smartlampData = "b"
             bedlampData = "f,128"
 
+        if data is not None:
+            tts = random.choice(success_tts)
+        else:
+            tts = random.choice(fail_tts)
+        #tts = self.Device + " set to " + self.Brightness + " percent"
+
+        # if need to speak the execution result by tts
+        hermes.publish_end_session(intent_message.session_id, tts)
+
         #Set downlights
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(downlightData, ("192.168.0.160", 16000))
@@ -240,15 +248,6 @@ class SmartDevices(object):
         #Set bedside lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(bedlampData, ("192.168.0.180", 4220))
-
-        if data is not None:
-            tts = random.choice(success_tts)
-        else:
-            tts = random.choice(fail_tts)
-        #tts = self.Device + " set to " + self.Brightness + " percent"
-
-        # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.session_id, tts)
 
 
     # --> Master callback function, triggered everytime an intent is recognized
@@ -272,56 +271,56 @@ class SmartDevices(object):
         with Hermes(MQTT_ADDR) as h:
             h.subscribe_intents(self.master_intent_callback).start()
 
-    def ctFromColor(color):
-        if color == "natural":
+    def ctFromColor(setColor):
+        if setColor == "natural":
             return "512"
-        if color == "warm":
+        if setColor == "warm":
             return "0"
-        if color == "cool":
+        if setColor == "cool":
             return "1023"
         else:
             return ""
     
-    def rgbctFromColor(color):
-        if color == "natural":
+    def rgbctFromColor(setColor):
+        if setColor == "natural":
             return "0,0,0,255,255"
-        if color == "warm":
+        if setColor == "warm":
             return "0,0,0,255,0"
-        if color == "cool":
+        if setColor == "cool":
             return "0,0,0,0,255"
-        if color == "blue":
+        if setColor == "blue":
             return "0,0,255,0,0"
-        if color == "green":
+        if setColor == "green":
             return "0,255,0,0,0"
-        if color == "red":
+        if setColor == "red":
             return "255,0,0,0,0"
-        if color == "cyan":
+        if setColor == "cyan":
             return "0,255,255,0,0"
-        if color == "yellow":
+        if setColor == "yellow":
             return "255,255,0,0,0"
-        if color == "pink":
+        if setColor == "pink":
             return "255,0,255,0,0"
         else:
             return ""
     
-    def rgbFromColor(color):
-        if color == "natural":
+    def rgbFromColor(setColor):
+        if setColor == "natural":
             return "255,255,255"
-        if color == "warm":
+        if setColor == "warm":
             return "255,255,200"
-        if color == "cool":
+        if setColor == "cool":
             return "230,230,255"
-        if color == "blue":
+        if setColor == "blue":
             return "0,0,255"
-        if color == "green":
+        if setColor == "green":
             return "0,255,0"
-        if color == "red":
+        if setColor == "red":
             return "255,0,0"
-        if color == "cyan":
+        if setColor == "cyan":
             return "0,255,255"
-        if color == "yellow":
+        if setColor == "yellow":
             return "255,255,0"
-        if color == "pink":
+        if setColor == "pink":
             return "255,0,255"
         else:
              return ""
