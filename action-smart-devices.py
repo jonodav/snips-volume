@@ -4,6 +4,7 @@
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
+import dataFromColor
 import io
 import socket
 import random
@@ -35,60 +36,6 @@ class SmartDevices(object):
 
         # start listening to MQTT
         self.start_blocking()
-
-    def ctFromColor(setColor):
-        if setColor == "natural":
-            return "512"
-        if setColor == "warm":
-            return "0"
-        if setColor == "cool":
-            return "1023"
-        else:
-            return ""
-    
-    def rgbctFromColor(setColor):
-        if setColor == "natural":
-            return "0,0,0,255,255"
-        if setColor == "warm":
-            return "0,0,0,255,0"
-        if setColor == "cool":
-            return "0,0,0,0,255"
-        if setColor == "blue":
-            return "0,0,255,0,0"
-        if setColor == "green":
-            return "0,255,0,0,0"
-        if setColor == "red":
-            return "255,0,0,0,0"
-        if setColor == "cyan":
-            return "0,255,255,0,0"
-        if setColor == "yellow":
-            return "255,255,0,0,0"
-        if setColor == "pink":
-            return "255,0,255,0,0"
-        else:
-            return ""
-    
-    def rgbFromColor(setColor):
-        if setColor == "natural":
-            return "255,255,255"
-        if setColor == "warm":
-            return "255,255,200"
-        if setColor == "cool":
-            return "230,230,255"
-        if setColor == "blue":
-            return "0,0,255"
-        if setColor == "green":
-            return "0,255,0"
-        if setColor == "red":
-            return "255,0,0"
-        if setColor == "cyan":
-            return "0,255,255"
-        if setColor == "yellow":
-            return "255,255,0"
-        if setColor == "pink":
-            return "255,0,255"
-        else:
-             return ""
         
     # --> Sub callback function, one per intent
     def onOffCallback(self, hermes, intent_message):
@@ -203,17 +150,17 @@ class SmartDevices(object):
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
-            data = "t," + ctFromColor(self.Color)
+            data = "t," + dataFromColor.ctFromColor(self.Color)
         
         if self.Device == "desk light":
             ip = "192.168.0.181"
             port = 4221
-            data = "f," + rgbctFromColor(self.Color)
+            data = "f," + dataFromColor.rgbctFromColor(self.Color)
         
         if self.Device == "smart lamp":
             ip = "192.168.0.182"
             port = 4222
-            data = "f," + rgbFromColor(self.Color)
+            data = "f," + dataFromColor.rgbFromColor(self.Color)
             if self.Color == "fire":
                 data = "b"
             if self.Color == "clouds":
