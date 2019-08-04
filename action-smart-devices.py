@@ -146,8 +146,6 @@ class SmartDevices(object):
             if slot_value == "Color":
                 self.Color = slot.first().value.encode("utf8")
 
-        data = None
-
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
@@ -172,12 +170,7 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
-        if data is not None:
-            tts = random.choice(success_tts)
-        else:
-            tts = random.choice(fail_tts)
-
-        # if need to speak the execution result by tts
+        tts = random.choice(success_tts)
         hermes.publish_end_session(intent_message.session_id, tts)
 
     def setSceneCallback(self, hermes, intent_message):
@@ -227,15 +220,6 @@ class SmartDevices(object):
             smartlampData = "b"
             bedlampData = "f,128"
 
-        if data is not None:
-            tts = random.choice(success_tts)
-        else:
-            tts = random.choice(fail_tts)
-        #tts = self.Device + " set to " + self.Brightness + " percent"
-
-        # if need to speak the execution result by tts
-        hermes.publish_end_session(intent_message.session_id, tts)
-
         #Set downlights
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(downlightData, ("192.168.0.160", 16000))
@@ -248,7 +232,9 @@ class SmartDevices(object):
         #Set bedside lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(bedlampData, ("192.168.0.180", 4220))
-
+            
+        tts = random.choice(success_tts)
+        hermes.publish_end_session(intent_message.session_id, tts)
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
