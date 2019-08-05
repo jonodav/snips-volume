@@ -20,6 +20,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 success_tts = ['Got it', 'Sure', 'Done', 'Ok']
 fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work", "No"]
+bye_tts = ["Goodbye", "See you later"]
 
 class SmartDevices(object):
     """Class used to wrap action code with mqtt connection
@@ -267,12 +268,12 @@ class SmartDevices(object):
         sock.sendto("f,0,0,0,0,0", ("192.168.0.181", 4221))
         #Set smart lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto("f,0", ("192.168.0.182", 4222))
+        sock.sendto("f,0,0,0", ("192.168.0.182", 4222))
         #Set bedside lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto("f,0,0,0", ("192.168.0.180", 4220))
+        sock.sendto("f,0", ("192.168.0.180", 4220))
 
-        tts = random.choice(success_tts)
+        tts = random.choice(bye_tts)
         hermes.publish_end_session(intent_message.session_id, tts)
 
     # --> Master callback function, triggered everytime an intent is recognized
