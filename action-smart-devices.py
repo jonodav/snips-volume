@@ -148,10 +148,9 @@ class SmartDevices(object):
         for (slot_value, slot) in intent_message.slots.items():
             if slot_value == "Device":
                 self.Device = slot.first().value.encode("utf8")
+
             if slot_value == "Color":
                 self.Color = slot.first().value.encode("utf8")
-            else: 
-                hermes.publish_end_session(intent_message.session_id, random.choice(no_slot_tts))
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
@@ -168,9 +167,9 @@ class SmartDevices(object):
             port = 4222
             if self.Color == "fire":
                 data = "b"
-            if self.Color == "clouds":
+            elif self.Color == "clouds":
                 data = "d"
-            if self.Color == "cycle":
+            elif self.Color == "cycle":
                 data = "c"
             else: 
                 data = "f," + dataFromColor.rgbFromColor(self.Color)
@@ -179,6 +178,8 @@ class SmartDevices(object):
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
             sock.sendto(data, (ip, port))
             tts = random.choice(success_tts)
+        elif data == "":
+            tts = random.choice(no_slot_tts)
         else:
             tts = random.choice(fail_tts)
         
