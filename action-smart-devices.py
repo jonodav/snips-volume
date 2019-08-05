@@ -21,6 +21,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 success_tts = ['Got it', 'Sure', 'Done', 'Ok']
 fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work", "No"]
 bye_tts = ["Goodbye", "See you later"]
+no_slot_tts = ["What do you mean?", "Don't waste my time", "I can't do anything with that", "Please stop bothering me"]
 
 class SmartDevices(object):
     """Class used to wrap action code with mqtt connection
@@ -108,6 +109,8 @@ class SmartDevices(object):
                 self.Device = slot.first().value.encode("utf8")
             if slot_value == "Brightness":
                 self.Brightness = slot.first().value.encode("utf8")
+            else:
+                hermes.publish_end_session(intent_message.session_id, random.choice(no_slot_tts))
 
         data = None
 
@@ -147,6 +150,8 @@ class SmartDevices(object):
                 self.Device = slot.first().value.encode("utf8")
             if slot_value == "Color":
                 self.Color = slot.first().value.encode("utf8")
+            else: 
+                hermes.publish_end_session(intent_message.session_id, random.choice(no_slot_tts))
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
@@ -161,13 +166,14 @@ class SmartDevices(object):
         if self.Device == "smart lamp":
             ip = "192.168.0.182"
             port = 4222
-            data = "f," + dataFromColor.rgbFromColor(self.Color)
             if self.Color == "fire":
                 data = "b"
             if self.Color == "clouds":
                 data = "d"
             if self.Color == "cycle":
                 data = "c"
+            else: 
+                data = "f," + dataFromColor.rgbFromColor(self.Color)
 
         if data is not "fail":
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
