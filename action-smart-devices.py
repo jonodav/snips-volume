@@ -204,44 +204,44 @@ class SmartDevices(object):
             smartlampData = "g,0,0,100,90,100,0"
             bedlampData = "f,0"
             sceneData = True
-        if self.Scene == "lights out":
+        elif self.Scene == "lights out":
             downlightData = "0"
             deskstripData = "f,0,0,0,0,0"
             smartlampData = "f,0,0,0"
             bedlampData = "f,0"
             sceneData = True
-        if self.Scene == "reading":
+        elif self.Scene == "reading":
             downlightData = "0"
             deskstripData = "f,255,0,0,0,0"
             smartlampData = "f,16,0,0"
             bedlampData = "f,5"
             sceneData = True
-        if self.Scene == "blue":
+        elif self.Scene == "blue":
             downlightData = "f,1023,1023,1000"
             deskstripData = "f,0,0,255,0,0"
             smartlampData = "f,0,0,255"
             bedlampData = "f,0"
             sceneData = True
-        if self.Scene == "dim":
+        elif self.Scene == "dim":
             downlightData = "0"
             deskstripData = "f,255,0,0,0,0"
             smartlampData = "f,0,0,0"
             bedlampData = "f,1"
             sceneData = True
-        if self.Scene == "calm":
+        elif self.Scene == "calm":
             downlightData = "f,756,1023,1000"
             deskstripData = "f,0,0,255,0,48"
             smartlampData = "d"
             bedlampData = "f,39"
             sceneData = True
-        if self.Scene == "cozy":
+        elif self.Scene == "cozy":
             downlightData = "l,50,0,1000"
             deskstripData = "f,0,0,0,255,0"
             smartlampData = "b"
             bedlampData = "f,128"
             sceneData = True
 
-        if sceneData:
+        if sceneData is True:
             #Set downlights
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
             sock.sendto(downlightData, ("192.168.0.160", 16000))
