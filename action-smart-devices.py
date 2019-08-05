@@ -168,10 +168,13 @@ class SmartDevices(object):
             if self.Color == "cycle":
                 data = "c"
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto(data, (ip, port))
-
-        tts = random.choice(success_tts)
+        if data is not "fail":
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(data, (ip, port))
+            tts = random.choice(success_tts)
+        else:
+            tts = random.choice(fail_tts)
+        
         hermes.publish_end_session(intent_message.session_id, tts)
 
     def setSceneCallback(self, hermes, intent_message):
@@ -184,56 +187,91 @@ class SmartDevices(object):
         for (slot_value, slot) in intent_message.slots.items():
             if slot_value == "Scene":
                 self.Scene = slot.first().value.encode("utf8")
+        
+        sceneData = False
 
         if self.Scene == "day":
             downlightData = "f,1023,1023,1000"
             deskstripData = "f,0,0,0,0,255"
             smartlampData = "g,0,0,100,90,100,0"
             bedlampData = "f,0"
+            sceneData = True
         if self.Scene == "lights out":
             downlightData = "0"
             deskstripData = "f,0,0,0,0,0"
             smartlampData = "f,0,0,0"
             bedlampData = "f,0"
+            sceneData = True
         if self.Scene == "reading":
             downlightData = "0"
             deskstripData = "f,255,0,0,0,0"
             smartlampData = "f,16,0,0"
             bedlampData = "f,5"
+            sceneData = True
         if self.Scene == "blue":
             downlightData = "f,1023,1023,1000"
             deskstripData = "f,0,0,255,0,0"
             smartlampData = "f,0,0,255"
             bedlampData = "f,0"
+            sceneData = True
         if self.Scene == "dim":
             downlightData = "0"
             deskstripData = "f,255,0,0,0,0"
             smartlampData = "f,0,0,0"
             bedlampData = "f,1"
+            sceneData = True
         if self.Scene == "calm":
             downlightData = "f,756,1023,1000"
             deskstripData = "f,0,0,255,0,48"
             smartlampData = "d"
             bedlampData = "f,39"
+            sceneData = True
         if self.Scene == "cozy":
             downlightData = "l,50,0,1000"
             deskstripData = "f,0,0,0,255,0"
             smartlampData = "b"
             bedlampData = "f,128"
+            sceneData = True
+
+        if sceneData:
+            #Set downlights
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(downlightData, ("192.168.0.160", 16000))
+            #Set desk led strip
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(deskstripData, ("192.168.0.181", 4221))
+            #Set smart lamp
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(smartlampData, ("192.168.0.182", 4222))
+            #Set bedside lamp
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(bedlampData, ("192.168.0.180", 4220))
+            tts = random.choice(success_tts)
+        else:
+            tts = random.choice(fail_tts)
+            
+        hermes.publish_end_session(intent_message.session_id, tts)
+
+    def leavingCallback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        #hermes.publish_end_session(intent_message.session_id, "")
+        
+        # action code goes here...
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         #Set downlights
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto(downlightData, ("192.168.0.160", 16000))
+        sock.sendto("0", ("192.168.0.160", 16000))
         #Set desk led strip
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto(deskstripData, ("192.168.0.181", 4221))
+        sock.sendto("f,0,0,0,0,0", ("192.168.0.181", 4221))
         #Set smart lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto(smartlampData, ("192.168.0.182", 4222))
+        sock.sendto("f,0", ("192.168.0.182", 4222))
         #Set bedside lamp
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.sendto(bedlampData, ("192.168.0.180", 4220))
-            
+        sock.sendto("f,0,0,0", ("192.168.0.180", 4220))
+
         tts = random.choice(success_tts)
         hermes.publish_end_session(intent_message.session_id, tts)
 

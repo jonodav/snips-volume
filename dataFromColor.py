@@ -6,7 +6,7 @@ def ctFromColor(setColor):
         if setColor == "cool":
             return "1023"
         else:
-            return ""
+            return "fail"
     
 def rgbctFromColor(setColor):
     if setColor == "natural":
@@ -28,7 +28,7 @@ def rgbctFromColor(setColor):
     if setColor == "pink":
         return "255,0,255,0,0"
     else:
-        return ""
+        return "fail"
 
 def rgbFromColor(setColor):
     if setColor == "natural":
@@ -50,4 +50,4 @@ def rgbFromColor(setColor):
     if setColor == "pink":
         return "255,0,255"
     else:
-            return ""
+            return "fail"
