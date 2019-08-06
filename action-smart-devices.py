@@ -8,6 +8,7 @@ import dataFromColor
 import io
 import socket
 import random
+import datetime as dt
 
 CONFIG_INI = "config.ini"
 
@@ -21,6 +22,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 success_tts = ['Got it', 'Sure', 'Done', 'Ok']
 fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work", "No"]
 bye_tts = ["Goodbye", "See you later"]
+hi_tts = ["Welcome back", "Welcome home"]
 no_slot_tts = ["What do you mean?", "Don't waste my time", "I can't do anything with that", "Please stop bothering me"]
 
 class SmartDevices(object):
@@ -283,6 +285,43 @@ class SmartDevices(object):
         tts = random.choice(bye_tts)
         hermes.publish_end_session(intent_message.session_id, tts)
 
+    def returnCallback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        #hermes.publish_end_session(intent_message.session_id, "")
+        
+        # action code goes here...
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+
+        if dt.datetime.now().hour < 13:
+            dlData = "f, 1023, 1023"
+            deskData = "f,0,0,0,0,255"
+            rlData = "f,0"
+        elif dt.datetime.now().hour >= 13 and dt.datetime.now().hour < 19:
+            dlData = "f, 1023, 512"
+            deskData = "f,0,0,0,255,255"
+            rlData = "f," + (dt.datetime.now().hour - 13 * 20)
+        elif dt.datetime.now().hour >= 19 and dt.datetime.now().hour < 21:
+            dlData = "f, 767, 256"
+            deskData = "f,0,0,0,255,0"
+            rlData = "f,128"
+        else: 
+            dlData = "f, 512, 0"
+            deskData = "f,0,0,0,255,0"
+            rlData = "f,128"
+
+        #Set downlights
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.sendto(dlData, ("192.168.0.160", 16000))
+        #Set desk led strip
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.sendto(deskData, ("192.168.0.181", 4221))
+        #Set bedside lamp
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.sendto(rlData, ("192.168.0.180", 4220))
+
+        tts = random.choice(hi_tts)
+        hermes.publish_end_session(intent_message.session_id, tts)
+
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
@@ -296,6 +335,8 @@ class SmartDevices(object):
             self.setSceneCallback(hermes, intent_message)
         if coming_intent == 'thejonnyd:Leaving':
             self.leavingCallback(hermes, intent_message)
+        if coming_intent == 'thejonnyd:Returning':
+            self.returnCallback(hermes, intent_message)
 
         # more callback and if condition goes here...
 
