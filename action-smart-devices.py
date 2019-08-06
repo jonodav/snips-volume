@@ -299,7 +299,7 @@ class SmartDevices(object):
         elif dt.datetime.now().hour >= 13 and dt.datetime.now().hour < 19:
             dlData = "f, 1023, 512"
             deskData = "f,0,0,0,255,255"
-            rlData = "f," + (dt.datetime.now().hour - 13 * 20)
+            rlData = "f," + str(dt.datetime.now().hour - 13 * 20)
         elif dt.datetime.now().hour >= 19 and dt.datetime.now().hour < 21:
             dlData = "f, 767, 256"
             deskData = "f,0,0,0,255,0"
