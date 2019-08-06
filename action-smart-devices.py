@@ -106,11 +106,14 @@ class SmartDevices(object):
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
+        brightnessSet = False
+
         for (slot_value, slot) in intent_message.slots.items():
             if slot_value == "Device":
                 self.Device = slot.first().value.encode("utf8")
             if slot_value == "Brightness":
                 self.Brightness = slot.first().value.encode("utf8")
+                brightnessSet = True
 
         deviceSet = False
 
@@ -131,7 +134,7 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
-        if deviceSet and self.Brightness is not None:
+        if deviceSet and brightnessSet:
             tts = random.choice(success_tts)
         elif self.Brightness is None:
             tts = random.choice(no_slot_tts)
@@ -157,6 +160,7 @@ class SmartDevices(object):
                 self.Color = slot.first().value.encode("utf8")
 
         deviceSet = False
+        data = " "
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
