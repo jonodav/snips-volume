@@ -112,26 +112,28 @@ class SmartDevices(object):
             if slot_value == "Brightness":
                 self.Brightness = slot.first().value.encode("utf8")
 
-        data = None
+        deviceSet = False
 
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
             value = (float(self.Brightness) / 100) * 1023
             data = "l," + str(value)
+            deviceSet = True
         
         if self.Device == "bedside lamp":
             ip = "192.168.0.180"
             port = 4220
             value = (float(self.Brightness) / 100) * 255
             data = "f," + str(value)
+            deviceSet = True
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(data, (ip, port))
 
-        if data is not None:
+        if deviceSet:
             tts = random.choice(success_tts)
-        elif self.Brightness == "":
+        elif self.Brightness is None:
             tts = random.choice(no_slot_tts)
         else:
             tts = random.choice(fail_tts)
