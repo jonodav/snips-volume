@@ -111,8 +111,6 @@ class SmartDevices(object):
                 self.Device = slot.first().value.encode("utf8")
             if slot_value == "Brightness":
                 self.Brightness = slot.first().value.encode("utf8")
-            else:
-                hermes.publish_end_session(intent_message.session_id, random.choice(no_slot_tts))
 
         data = None
 
@@ -133,6 +131,8 @@ class SmartDevices(object):
 
         if data is not None:
             tts = random.choice(success_tts)
+        elif self.Brightness == "":
+            tts = random.choice(no_slot_tts)
         else:
             tts = random.choice(fail_tts)
         #tts = self.Device + " set to " + self.Brightness + " percent"
