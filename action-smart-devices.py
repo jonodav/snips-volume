@@ -296,10 +296,10 @@ class SmartDevices(object):
             dlData = "f, 1023, 1023"
             deskData = "f,0,0,0,0,255"
             rlData = "f,0"
-        elif dt.datetime.now().hour >= 13 and dt.datetime.now().hour < 19:
+        elif dt.datetime.now().hour >= 15 and dt.datetime.now().hour < 19:
             dlData = "f, 1023, 512"
             deskData = "f,0,0,0,255,255"
-            rlData = "f," + str(dt.datetime.now().hour - 13 * 20)
+            rlData = "f," + str((dt.datetime.now().hour - 15) * 20)
         elif dt.datetime.now().hour >= 19 and dt.datetime.now().hour < 21:
             dlData = "f, 767, 256"
             deskData = "f,0,0,0,255,0"
