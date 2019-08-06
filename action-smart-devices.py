@@ -156,19 +156,24 @@ class SmartDevices(object):
             if slot_value == "Color":
                 self.Color = slot.first().value.encode("utf8")
 
+        deviceSet = False
+
         if self.Device == "downlights":
             ip = "192.168.0.160"
             port = 16000
             data = "t," + dataFromColor.ctFromColor(self.Color)
+            deviceSet = True
         
         if self.Device == "desk light":
             ip = "192.168.0.181"
             port = 4221
             data = "f," + dataFromColor.rgbctFromColor(self.Color)
+            deviceSet = True
         
         if self.Device == "smart lamp":
             ip = "192.168.0.182"
             port = 4222
+            deviceSet = True
             if self.Color == "fire":
                 data = "b"
             elif self.Color == "clouds":
@@ -182,7 +187,7 @@ class SmartDevices(object):
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
             sock.sendto(data, (ip, port))
             tts = random.choice(success_tts)
-        elif data == "":
+        elif deviceSet == False:
             tts = random.choice(no_slot_tts)
         else:
             tts = random.choice(fail_tts)
