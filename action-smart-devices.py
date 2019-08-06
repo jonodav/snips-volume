@@ -299,11 +299,14 @@ class SmartDevices(object):
         elif dt.datetime.now().hour >= 15 and dt.datetime.now().hour < 19:
             dlData = "f, 1023, 512"
             deskData = "f,0,0,0,255,255"
-            rlData = "f," + str((dt.datetime.now().hour - 15) * 20)
+            lampBrightness = (dt.datetime.now().hour - 18) * 20
+            if lampBrightness < 0:
+                lampBrightness = 0
+            rlData = "f," + str(lampBrightness)
         elif dt.datetime.now().hour >= 19 and dt.datetime.now().hour < 21:
             dlData = "f, 767, 256"
             deskData = "f,0,0,0,255,0"
-            rlData = "f,128"
+            rlData = "f," + str((dt.datetime.now().hour - 18) * 20)
         else: 
             dlData = "f, 512, 0"
             deskData = "f,0,0,0,255,0"
