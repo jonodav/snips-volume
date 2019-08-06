@@ -187,7 +187,7 @@ class SmartDevices(object):
             else: 
                 data = "f," + dataFromColor.rgbFromColor(self.Color)
 
-        if data is not "fail":
+        if data is not "fail" and deviceSet:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
             sock.sendto(data, (ip, port))
             tts = random.choice(success_tts)
