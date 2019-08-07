@@ -248,7 +248,7 @@ class SmartDevices(object):
             bedlampData = "f,39"
             sceneData = True
         elif self.Scene == "cozy":
-            downlightData = "l,50,0,1000"
+            downlightData = "f,50,0,1000"
             deskstripData = "f,0,0,0,255,0"
             smartlampData = "b"
             bedlampData = "f,128"
