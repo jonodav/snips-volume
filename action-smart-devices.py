@@ -198,6 +198,47 @@ class SmartDevices(object):
         
         hermes.publish_end_session(intent_message.session_id, tts)
 
+    def setBrightnessColorCallback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        #hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        brightnessSet = False
+
+        for (slot_value, slot) in intent_message.slots.items():
+            if slot_value == "Device":
+                self.Device = slot.first().value.encode("utf8")
+
+            if slot_value == "Color":
+                self.Color = slot.first().value.encode("utf8")
+            
+            if slot_value == "Brightness":
+                self.Brightness = slot.first().value.encode("utf8")
+                brightnessSet = True
+
+        deviceSet = False
+        data = " "
+
+        if self.Device == "downlights":
+            ip = "192.168.0.160"
+            port = 16000
+            value = (float(self.Brightness) / 100) * 1023
+            data = "f," + str(value) + "," + dataFromColor.ctFromColor(self.Color)
+            deviceSet = True
+        
+
+        if brightnessSet and deviceSet:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            sock.sendto(data, (ip, port))
+            tts = random.choice(success_tts)
+        elif deviceSet == False:
+            tts = random.choice(no_slot_tts)
+        else:
+            tts = random.choice(fail_tts)
+        
+        hermes.publish_end_session(intent_message.session_id, tts)
+
     def setSceneCallback(self, hermes, intent_message):
         # terminate the session first if not continue
         #hermes.publish_end_session(intent_message.session_id, "")
@@ -280,6 +321,9 @@ class SmartDevices(object):
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
+        if slot_value == "Animal":
+                self.Animal = slot.first().value.encode("utf8")
+
         #Set downlights
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto("0", ("192.168.0.160", 16000))
@@ -293,7 +337,10 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto("f,0", ("192.168.0.180", 4220))
 
-        tts = random.choice(bye_tts)
+        if self.Animal == "Aligator":
+            tts = "In a while, crocodile!"
+        else:
+            tts = random.choice(bye_tts)
         hermes.publish_end_session(intent_message.session_id, tts)
 
     def returnCallback(self, hermes, intent_message):
@@ -351,6 +398,8 @@ class SmartDevices(object):
             self.leavingCallback(hermes, intent_message)
         if coming_intent == 'thejonnyd:Returning':
             self.returnCallback(hermes, intent_message)
+        if coming_intent == 'thejonnyd:SetBrightnessAndColor':
+            self.setBrightnessColorCallback(hermes, intent_message)
 
         # more callback and if condition goes here...
 
