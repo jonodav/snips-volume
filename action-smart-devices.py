@@ -303,7 +303,7 @@ class SmartDevices(object):
         # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
-        if dt.datetime.now().hour < 13:
+        if dt.datetime.now().hour < 15:
             dlData = "f,1023,1023"
             deskData = "f,0,0,0,0,255"
             rlData = "f,0"
