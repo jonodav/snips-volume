@@ -322,7 +322,7 @@ class SmartDevices(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         if slot_value == "Animal":
-                self.Animal = slot.first().value.encode("utf8")
+            self.Animal = slot.first().value.encode("utf8")
 
         #Set downlights
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
