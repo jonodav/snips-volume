@@ -337,7 +337,7 @@ class SmartDevices(object):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto("f,0", ("192.168.0.180", 4220))
 
-        if self.Animal == "Aligator":
+        if self.Animal == "aligator":
             tts = "In a while, crocodile!"
         else:
             tts = random.choice(bye_tts)
