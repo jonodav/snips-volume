@@ -292,7 +292,7 @@ class SmartDevices(object):
             downlightData = "f,50,0,1000"
             deskstripData = "f,0,0,0,255,0"
             smartlampData = "b"
-            bedlampData = "f,128"
+            bedlampData = "f,39"
             sceneData = True
 
         if sceneData is True:
