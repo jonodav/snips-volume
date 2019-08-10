@@ -21,7 +21,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 success_tts = ['Got it', 'Sure', 'Done', 'Ok']
 fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work", "No"]
-bye_tts = ["Goodbye", "See you later"]
+bye_tts = ["Goodbye", "See you later", "Thank goodness"]
 hi_tts = ["Welcome back", "Welcome home"]
 no_slot_tts = ["What do you mean?", "Don't waste my time", "I can't do anything with that", "Please stop bothering me"]
 
@@ -271,10 +271,10 @@ class SmartDevices(object):
             bedlampData = "f,5"
             sceneData = True
         elif self.Scene == "blue":
-            downlightData = "f,1023,1023,1000"
+            downlightData = "f,256,0,1000"
             deskstripData = "f,0,0,255,0,0"
             smartlampData = "f,0,0,255"
-            bedlampData = "f,0"
+            bedlampData = "f,39"
             sceneData = True
         elif self.Scene == "dim":
             downlightData = "0"
