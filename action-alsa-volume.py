@@ -58,6 +58,8 @@ class ALSAVolume(object):
                 volume = int(self.Volume)
                 deviceName = conf['secret']['deviceName']
                 call(["amixer", "set", deviceName, str(volume)+"%"])
+            except ValueError:
+                pass
             tts = random.choice(success_tts)
         else:
             if(conf['secret']['snarkyResponses']) == "y":
