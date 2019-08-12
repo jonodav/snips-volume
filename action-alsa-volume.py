@@ -55,7 +55,8 @@ class SnipsVolume(object):
 
         if volumeSet:
             try:
-                volume = int(self.Volume)
+                percent = self.Volume.split('.')
+                volume = int(percent[0])
                 if (volume <= 100) and (volume >= 0):
                     deviceName = conf['secret']['deviceName']
                     call(["amixer", "set", deviceName, str(volume)+"%"])
