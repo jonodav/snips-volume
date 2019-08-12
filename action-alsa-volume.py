@@ -8,7 +8,7 @@ import dataFromColor
 import io
 import socket
 import random
-import datetime as dt
+from subprocess import call
 
 CONFIG_INI = "config.ini"
 
@@ -55,11 +55,9 @@ class ALSAVolume(object):
 
         if volumeSet:
             try:
-                percent = self.Volume.split('.')
-                volume = int(percent[0])
-                if (volume <= 100) and (volume >= 0):
-                    deviceName = conf['secret']['deviceName']
-                    call(["amixer", "set", deviceName, str(volume)+"%"])
+                volume = int(self.Volume)
+                deviceName = conf['secret']['deviceName']
+                call(["amixer", "set", deviceName, str(volume)+"%"])
             tts = random.choice(success_tts)
         else:
             if(conf['secret']['snarkyResponses']) == "y":
