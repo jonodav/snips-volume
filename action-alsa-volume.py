@@ -54,7 +54,6 @@ class ALSAVolume(object):
                 volumeSet = True
 
         if volumeSet:
-            print('Volume Set')
             try:
                 percent = self.Volume.split('.')
                 volume = int(percent[0])
