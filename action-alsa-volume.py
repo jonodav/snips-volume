@@ -56,7 +56,7 @@ class ALSAVolume(object):
             try:
                 volume = int(self.Volume)
                 deviceName = self.config['secret']['device_name']
-                call(["amixer", "set", deviceName, str(volume)+"%"])
+                call(["sudo", "amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 pass
             tts = random.choice(success_tts)
