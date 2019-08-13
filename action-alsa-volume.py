@@ -53,16 +53,15 @@ class ALSAVolume(object):
                 volumeSet = True
 
         if volumeSet:
-            print("volumeSet is true")
             try:
                 volume = int(self.Volume)
-                deviceName = self.config['secret']['deviceName']
+                deviceName = self.config['secret']['device_name']
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 pass
             tts = random.choice(success_tts)
         else:
-            if(self.config['secret']['snarkyResponses']) == "y":
+            if(self.config['secret']['snarky_response']) == "y":
                 tts = random.choice(no_slot_tts)
             else:
                 tts = random.choice(fail_tts)

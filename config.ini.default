@@ -1,5 +1,5 @@
 # no section for preset values
 
 [secret]
-deviceName=PCM
-snarkyResponses=n
+device_name=PCM
+snarky_response=n
