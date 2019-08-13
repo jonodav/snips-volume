@@ -5,6 +5,7 @@ then
     cp config.ini.default config.ini
 fi
 
+sudo usermod -a -G audio _snips-skills
 
 VENV=venv
 
