@@ -57,12 +57,8 @@ class ALSAVolume(object):
             try:
                 volume = int(self.Volume)
                 deviceName = conf['secret']['deviceName']
-                print("Calling amixer")
                 call(["amixer", "set", deviceName, str(volume)+"%"])
-                print("Called amixer")
-                # rubbish code: print subprocess.check_output(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
-                print("Value error")
                 pass
             tts = random.choice(success_tts)
         else:
@@ -87,4 +83,5 @@ class ALSAVolume(object):
             h.subscribe_intents(self.master_intent_callback).start()
  
 if __name__ == "__main__":
+    conf = read_configuration_file("config.ini")
     ALSAVolume()
