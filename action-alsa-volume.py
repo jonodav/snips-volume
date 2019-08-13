@@ -8,7 +8,7 @@ import dataFromColor
 import io
 import socket
 import random
-from subprocess
+from subprocess import call
 
 CONFIG_INI = "config.ini"
 
@@ -54,12 +54,16 @@ class ALSAVolume(object):
                 volumeSet = True
 
         if volumeSet:
+            print("volumeSet is true")
             try:
                 volume = int(self.Volume)
                 deviceName = conf['secret']['deviceName']
-                #call(["amixer", "set", deviceName, str(volume)+"%"])
-                print subprocess.check_output(["amixer", "set", deviceName, str(volume)+"%"])
+                print("Calling amixer")
+                call(["amixer", "set", deviceName, str(volume)+"%"])
+                print("Called amixer")
+                # rubbish code: print subprocess.check_output(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
+                print("Value error")
                 pass
             tts = random.choice(success_tts)
         else:
