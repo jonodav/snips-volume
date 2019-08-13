@@ -8,7 +8,7 @@ import dataFromColor
 import io
 import socket
 import random
-from subprocess import call
+from subprocess
 
 CONFIG_INI = "config.ini"
 
@@ -57,7 +57,8 @@ class ALSAVolume(object):
             try:
                 volume = int(self.Volume)
                 deviceName = conf['secret']['deviceName']
-                call(["amixer", "set", deviceName, str(volume)+"%"])
+                #call(["amixer", "set", deviceName, str(volume)+"%"])
+                print subprocess.check_output(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 pass
             tts = random.choice(success_tts)
