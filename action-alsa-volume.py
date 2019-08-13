@@ -4,7 +4,6 @@
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
-import dataFromColor
 import io
 import socket
 import random
