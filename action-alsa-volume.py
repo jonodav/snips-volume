@@ -56,13 +56,13 @@ class ALSAVolume(object):
             print("volumeSet is true")
             try:
                 volume = int(self.Volume)
-                deviceName = conf['secret']['deviceName']
+                deviceName = self.config['secret']['deviceName']
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 pass
             tts = random.choice(success_tts)
         else:
-            if(conf['secret']['snarkyResponses']) == "y":
+            if(self.config['secret']['snarkyResponses']) == "y":
                 tts = random.choice(no_slot_tts)
             else:
                 tts = random.choice(fail_tts)
@@ -83,5 +83,4 @@ class ALSAVolume(object):
             h.subscribe_intents(self.master_intent_callback).start()
  
 if __name__ == "__main__":
-    conf = read_configuration_file("config.ini")
     ALSAVolume()
