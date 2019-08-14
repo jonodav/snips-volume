@@ -20,7 +20,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 success_tts = ['Got it', 'Sure', 'Done', 'Ok']
 fail_tts = ["Sorry, I can't do that", "Sorry, that doesn't work"]
-no_slot_tts = ["What do you mean?", "Don't waste my time", "I can't do anything with that", "Please stop bothering me", "No"]
+no_slot_tts = ["What do you mean?", "Don't waste my time", "I can't do anything with that", "Please stop bothering me", "No", "I'd rather not", "No, I don't think I will"]
 
 class ALSAVolume(object):
     """Class used to wrap action code with mqtt connection
