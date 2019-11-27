@@ -53,6 +53,7 @@ class ALSAVolume(object):
                 volumeSet = True
 
         if volumeSet:
+            scaledVolume = None
             try:
                 volume = int(self.Volume)
                 deviceName = self.config['secret']['device_name']
@@ -61,16 +62,20 @@ class ALSAVolume(object):
                 if scale != 100:
                     volume = volume * 100 / scale
                     print('scaled volume is ' + str(volume))
+                    scaledVolume = volume
                 if zeroValue != 0:
                     difference = 100 - zeroValue
                     print('difference is ' + str(difference))
-                    volume = zeroValue + (volume * difference / 100)
+                    volume = int(zeroValue + (volume * difference / 100))
                     print('volume is ' + str(volume))
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 tts = "Sorry, the configuration is invalid"
                 pass
-            tts = random.choice(success_tts) + ", " + str(volume) + " percent"
+            if scale != 100:
+                tts = random.choice(success_tts) + ", " + "volume set to " + str(scaledVolume)
+            else:
+                tts = random.choice(success_tts) + ", " + str(volume) + " percent"
         else:
             if(self.config['secret']['snarky_response']) == "y":
                 tts = random.choice(no_slot_tts)
