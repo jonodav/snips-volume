@@ -61,7 +61,10 @@ class ALSAVolume(object):
                 scale = float(self.config['secret']['scale'])
                 if scale != 100:
                     scaledVolume = volume
-                    volume = volume * 100 / scale
+                    if volume > scale:
+                        volume = volume / scale
+                    else:
+                        volume = volume * 100 / scale
                     print('scaled volume is ' + str(volume))
                 if zeroValue != 0:
                     difference = 100 - zeroValue
