@@ -3,3 +3,5 @@
 [secret]
 device_name=PCM
 snarky_response=n
+zero_volume=0
+scale=100
