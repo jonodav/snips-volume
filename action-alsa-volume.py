@@ -56,8 +56,16 @@ class ALSAVolume(object):
             try:
                 volume = int(self.Volume)
                 deviceName = self.config['secret']['device_name']
+                zeroValue = int(self.config['secret']['zero_volume'])
+                scale = int(self.config['secret']['scale'])
+                if scale != 100:
+                    volume = volume / scale * 100
+                if zeroValue != 0:
+                    difference = 100 - zeroValue
+                    volume = zeroValue + (volume / 100 * difference)
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
+                tts = "Sorry, the configuration is invalid"
                 pass
             tts = random.choice(success_tts) + ", " + str(volume) + " percent"
         else:
