@@ -44,7 +44,7 @@ class ALSAVolume(object):
         #hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
-        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
         volumeSet = False
 
         for (slot_value, slot) in intent_message.slots.items():
@@ -60,9 +60,12 @@ class ALSAVolume(object):
                 scale = float(self.config['secret']['scale'])
                 if scale != 100:
                     volume = int(float(volume) // scale * 100)
+                    print('scaled volume is' + scale)
                 if zeroValue != 0:
                     difference = 100 - zeroValue
+                    print('difference is' + difference)
                     volume = zeroValue + int(float(volume) // 100 * float(difference))
+                    print('volume is' + volume)
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 tts = "Sorry, the configuration is invalid"
