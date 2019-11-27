@@ -59,10 +59,10 @@ class ALSAVolume(object):
                 zeroValue = int(self.config['secret']['zero_volume'])
                 scale = int(self.config['secret']['scale'])
                 if scale != 100:
-                    volume = volume / scale * 100
+                    volume = volume // scale * 100
                 if zeroValue != 0:
                     difference = 100 - zeroValue
-                    volume = zeroValue + (volume / 100 * difference)
+                    volume = zeroValue + (volume // 100 * difference)
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
                 tts = "Sorry, the configuration is invalid"
