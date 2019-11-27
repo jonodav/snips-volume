@@ -60,11 +60,11 @@ class ALSAVolume(object):
                 scale = float(self.config['secret']['scale'])
                 if scale != 100:
                     volume = int(float(volume) // scale * 100)
-                    print('scaled volume is' + str(scale))
+                    print('scaled volume is' + str(volume))
                 if zeroValue != 0:
                     difference = 100 - zeroValue
                     print('difference is' + str(difference))
-                    volume = zeroValue + int((float(volume) // 100) * float(difference))
+                    volume = zeroValue + (int((float(volume) // 100) * float(difference)))
                     print('volume is' + str(volume))
                 call(["amixer", "set", deviceName, str(volume)+"%"])
             except ValueError:
